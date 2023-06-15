@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>DjangoShrinkURL</title>
+</head>
+<body>
+  <header>
+    <a href="{% url 'login' %}">login</a> |
+    <a href="{% url 'logout' %}">logout</a>
+  </header>
+  <main>
+    {% block content %}
+    {% endblock %}
+  </main>
+</body>
+</html>
