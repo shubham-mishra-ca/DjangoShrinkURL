@@ -7,6 +7,10 @@
     <li>
         <p>Original: {{ url.original_url }}</p>
         <p>Short: {{ url.short_url }}</p>
+        <form action="{% url 'delete_url' url.id %}" method="POST">
+            {% csrf_token %}
+            <input type="submit" value="Delete">
+        </form>
     </li>
     {% empty %}
     <li>No URLs to display.</li>

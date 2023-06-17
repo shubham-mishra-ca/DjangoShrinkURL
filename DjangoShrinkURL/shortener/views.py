@@ -1,6 +1,6 @@
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.core.validators import URLValidator
 from django.core.exceptions import ValidationError
 from django.views import View
@@ -57,6 +57,12 @@ def register(request):
 def logout(request):
     django_logout(request)
     return redirect('login') 
+
+def delete_url(request, url_id):
+    if request.user.is_authenticated:
+        url = get_object_or_404(URL, id=url_id, user=request.user)
+        url.delete()
+    return redirect('dashboard')
 
 def dashboard(request):
     if request.user.is_authenticated:
