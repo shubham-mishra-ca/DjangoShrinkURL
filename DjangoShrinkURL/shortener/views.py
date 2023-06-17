@@ -6,7 +6,7 @@ from django.core.exceptions import ValidationError
 from django.views import View
 from .forms import LoginForm
 from .models import URL
-
+from django.contrib.auth import logout as django_logout
 
 
 class URLShortenerView(View):
@@ -54,6 +54,9 @@ def register(request):
         form = UserCreationForm()
     return render(request, 'registration/register.html', {'form': form})
 
+def logout(request):
+    django_logout(request)
+    return redirect('login') 
 
 def dashboard(request):
     if request.user.is_authenticated:

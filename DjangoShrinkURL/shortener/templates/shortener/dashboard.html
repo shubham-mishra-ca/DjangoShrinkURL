@@ -1,0 +1,15 @@
+{% extends 'shortener/base_generic.html' %}
+
+{% block content %}
+<h2>Your URLs</h2>
+<ul>
+    {% for url in urls %}
+    <li>
+        <p>Original: {{ url.original_url }}</p>
+        <p>Short: {{ url.short_url }}</p>
+    </li>
+    {% empty %}
+    <li>No URLs to display.</li>
+    {% endfor %}
+</ul>
+{% endblock %}
