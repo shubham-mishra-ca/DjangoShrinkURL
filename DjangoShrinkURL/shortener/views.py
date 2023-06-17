@@ -22,18 +22,12 @@ class URLShortenerView(View):
             return render(request, 'shortener/index.html', {'error': 'The provided URL is not valid.'})
 
         url, created = URL.objects.get_or_create(original_url=original_url)
-        return render(request, 'shortener/index.html', {'url': url})
 
-def register(request):
-    if request.method == "POST":
-        form = UserCreationForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            login(request, user)
-            return redirect('urlshortener')
-    else:
-        form = UserCreationForm()
-    return render(request, 'registration/register.html', {'form': form})
+        if request.user.is_authenticated:
+            url.user = request.user
+            url.save()
+
+        return render(request, 'shortener/index.html', {'url': url})
 
 class LoginView(View):
     def get(self, request, *args, **kwargs):
@@ -48,3 +42,22 @@ class LoginView(View):
             return redirect('urlshortener')
         else:
             return render(request, 'shortener/login.html', {'form': form})
+
+def register(request):
+    if request.method == "POST":
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect('urlshortener')
+    else:
+        form = UserCreationForm()
+    return render(request, 'registration/register.html', {'form': form})
+
+
+def dashboard(request):
+    if request.user.is_authenticated:
+        urls = URL.objects.filter(user=request.user)
+        return render(request, 'shortener/dashboard.html', {'urls': urls})
+    else:
+        return redirect('login')

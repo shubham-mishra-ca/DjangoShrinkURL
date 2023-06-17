@@ -1,17 +1,20 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Django Shrink URL</title>
+  <title>Django Shrink URL</title>
 </head>
 <body>
-    <header>
-        <h1>Django Shrink URL</h1>
-    </header>
-
-    <main>
-        {% block content %}
-        <!-- Content from child templates will be inserted here -->
-        {% endblock %}
-    </main>
+  <header>
+    <a href="{% url 'urlshortener' %}">Home</a> | 
+    {% if user.is_authenticated %}
+    <a href="{% url 'dashboard' %}">Dashboard</a> | 
+    <a href="{% url 'logout' %}">Logout</a>
+    {% else %}
+    <a href="{% url 'login' %}">Login</a> | 
+    <a href="{% url 'register' %}">Register</a>
+    {% endif %}
+  </header>
+  {% block content %}
+  {% endblock %}
 </body>
 </html>
