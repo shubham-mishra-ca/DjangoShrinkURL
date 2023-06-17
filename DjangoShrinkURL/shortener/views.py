@@ -1,10 +1,13 @@
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth import login
+from django.contrib.auth import authenticate, login
 from django.shortcuts import render, redirect
 from django.core.validators import URLValidator
 from django.core.exceptions import ValidationError
 from django.views import View
+from .forms import LoginForm
 from .models import URL
+
+
 
 class URLShortenerView(View):
     def get(self, request, *args, **kwargs):
@@ -31,3 +34,17 @@ def register(request):
     else:
         form = UserCreationForm()
     return render(request, 'registration/register.html', {'form': form})
+
+class LoginView(View):
+    def get(self, request, *args, **kwargs):
+        form = LoginForm()
+        return render(request, 'shortener/login.html', {'form': form})
+
+    def post(self, request, *args, **kwargs):
+        form = LoginForm(data=request.POST)
+        if form.is_valid():
+            user = form.get_user()
+            login(request, user)
+            return redirect('urlshortener')
+        else:
+            return render(request, 'shortener/login.html', {'form': form})
