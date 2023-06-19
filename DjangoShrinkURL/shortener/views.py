@@ -11,7 +11,17 @@ from django.contrib.auth import logout as django_logout
 
 class URLShortenerView(View):
     def get(self, request, *args, **kwargs):
-        return render(request, 'shortener/index.html')
+        if 'short_url' in kwargs:
+            short_url = kwargs['short_url']
+            try:
+                url = URL.objects.get(short_url=short_url)
+                url.times_visited += 1
+                url.save()
+                return redirect(url.original_url)
+            except URL.DoesNotExist:
+                return render(request, 'shortener/index.html', {'error': 'This short URL does not exist.'})
+        else:
+            return render(request, 'shortener/index.html')
 
     def post(self, request, *args, **kwargs):
         original_url = request.POST['original_url']
