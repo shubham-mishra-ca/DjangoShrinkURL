@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Shortened URL</title>
+</head>
+<body>
+    <h1>Your short URL:</h1>
+    <a href="{{ request.scheme }}://{{ request.get_host }}/{{ url.short_url }}">{{ request.scheme }}://{{ request.get_host }}/{{ url.short_url }}</a>
+</body>
+</html>

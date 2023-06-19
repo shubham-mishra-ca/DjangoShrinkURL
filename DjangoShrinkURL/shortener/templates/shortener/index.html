@@ -10,6 +10,9 @@
         <input type="url" name="original_url" required>
         <input type="submit" value="Shorten">
     </form>
+    {% if url %}
+        <p>Your short URL is: <a href="{{ url.short_url }}">{{ request.get_host }}/{{ url.short_url }}</a></p>
+    {% endif %}
     {% if error %}
         <p>{{ error }}</p>
     {% endif %}

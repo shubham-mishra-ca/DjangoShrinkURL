@@ -31,13 +31,14 @@ class URLShortenerView(View):
         except ValidationError:
             return render(request, 'shortener/index.html', {'error': 'The provided URL is not valid.'})
 
-        url, created = URL.objects.get_or_create(original_url=original_url)
+        url = URL(original_url=original_url)
 
         if request.user.is_authenticated:
             url.user = request.user
-            url.save()
-
-        return render(request, 'shortener/index.html', {'url': url})
+        
+        url.save()
+        
+        return redirect('success', url_id=url.id)
 
 class LoginView(View):
     def get(self, request, *args, **kwargs):
@@ -80,3 +81,7 @@ def dashboard(request):
         return render(request, 'shortener/dashboard.html', {'urls': urls})
     else:
         return redirect('login')
+
+def success(request, url_id):
+    url = get_object_or_404(URL, id=url_id)
+    return render(request, 'shortener/success.html', {'url': url})
