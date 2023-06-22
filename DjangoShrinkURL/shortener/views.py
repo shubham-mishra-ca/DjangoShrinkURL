@@ -42,7 +42,11 @@ class URLShortenerView(View):
         if created:
             messages.success(request, 'URL successfully shortened.')
         else:
-            messages.info(request, 'URL already shortened earlier.')
+            if request.user.is_authenticated:
+                if url.user == request.user:
+                    messages.info(request, 'URL already shortened earlier by you.')
+                else:
+                    messages.success(request, 'URL successfully shortened.')
 
         return redirect('success', url_id=url.id)
 
