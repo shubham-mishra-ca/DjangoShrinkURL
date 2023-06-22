@@ -1,10 +1,11 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Shortened URL</title>
-</head>
-<body>
-    <h1>Your short URL:</h1>
-    <a href="{{ request.scheme }}://{{ request.get_host }}/{{ url.short_url }}">{{ request.scheme }}://{{ request.get_host }}/{{ url.short_url }}</a>
-</body>
-</html>
+{% extends 'shortener/base.html' %}
+
+{% block content %}
+    <h1>URL Shortening Successful!</h1>
+    <p>Original URL: <a href="{{ url.original_url }}">{{ url.original_url }}</a></p>
+    <p>Short URL: <a href="{{ request.scheme }}://{{ request.get_host }}/{{ url.short_url }}">{{ request.scheme }}://{{ request.get_host }}/{{ url.short_url }}</a></p>
+
+    {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+    {% endfor %}
+{% endblock %}

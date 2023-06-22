@@ -6,7 +6,11 @@
     {% for url in urls %}
     <li>
         <p>Original: {{ url.original_url }}</p>
-        <p>Short: {{ url.short_url }}</p>
+        <p>Short: 
+            <a href="{% url 'urlshortener' short_url=url.short_url %}">
+                {{ request.scheme }}://{{ request.get_host }}/{{ url.short_url }}
+            </a>
+        </p>
         <p>Visits: {{ url.times_visited}}</p>
         <a href="{% url 'delete_url' url.id %}">Delete</a>
     </li>

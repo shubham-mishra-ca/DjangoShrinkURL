@@ -7,6 +7,8 @@ from django.views import View
 from .forms import LoginForm
 from .models import URL
 from django.contrib.auth import logout as django_logout
+from django.contrib import messages
+
 
 
 class URLShortenerView(View):
@@ -22,7 +24,7 @@ class URLShortenerView(View):
                 return render(request, 'shortener/index.html', {'error': 'This short URL does not exist.'})
         else:
             return render(request, 'shortener/index.html')
-
+    
     def post(self, request, *args, **kwargs):
         original_url = request.POST['original_url']
         validate = URLValidator()
@@ -31,13 +33,17 @@ class URLShortenerView(View):
         except ValidationError:
             return render(request, 'shortener/index.html', {'error': 'The provided URL is not valid.'})
 
-        url = URL(original_url=original_url)
+        url, created = URL.objects.get_or_create(original_url=original_url)
 
-        if request.user.is_authenticated:
+        if not created and url.user is None and request.user.is_authenticated:
             url.user = request.user
-        
-        url.save()
-        
+            url.save()
+
+        if created:
+            messages.success(request, 'URL successfully shortened.')
+        else:
+            messages.info(request, 'URL already shortened earlier.')
+
         return redirect('success', url_id=url.id)
 
 class LoginView(View):
