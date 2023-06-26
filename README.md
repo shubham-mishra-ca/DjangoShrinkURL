@@ -18,13 +18,13 @@ DjangoShrinkURL is a robust URL shortening service built with Django. This proje
 
 Stay tuned for more exciting features!
 
-* Docker instructions 
+# Docker instructions 
 
-First build the image using the following command
-`$ docker build . -t <image_tag>`
-replace the <image_name> with a name of your choice in lowercase only
+* First build the image using the following command
+* `$ docker build . -t <image_tag>`
+* replace the <image_name> with a name of your choice in lowercase only
 
-Run the container using the command
-`$ docker run --name <container_name> -p 8000:8000 <image_tag> `
+* Run the container using the command
+* `$ docker run --name <container_name> -p 8000:8000 <image_tag> `
 
-replace the <container_name> & <image_name> with a name of your choice 
+* replace the <container_name> & <image_name> with a name of your choice 
